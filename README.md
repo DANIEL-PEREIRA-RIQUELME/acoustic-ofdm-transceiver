@@ -136,10 +136,16 @@ Standard Least Squares (LS) frequency-domain channel estimation divides the rece
 $$\hat{H}_{\text{LS}}[k] = \frac{Y_{\text{training}}[k]}{X_{\text{training}}[k]} = H[k] + \frac{Z[k]}{X_{\text{training}}[k]}$$
 
 To prevent noise enhancement outside the channel's delay spread, an asymmetric time-domain windowing technique (LMMSE approximation) is applied:
-1. **CIR Computation:** Transforms $\hat{H}_{\text{LS}}[k]$ to time domain via IFFT: $\hat{h}_{\text{LS}}[n] = \text{IFFT}\{\hat{H}_{\text{LS}}[k]\}$.
-2. **Circular Shift Centering:** Detects the peak power cursor tap and centers it at index $N/2$, resolving circular wrap-around effects.
-3. **Asymmetric Masking:** Retains $N_{\text{back}} = 2$ pre-cursor taps and $N_{\text{fwd}} = 15$ post-cursor taps, zeroing out remaining samples.
-4. **Frequency Transformation:** Shifts the cleaned CIR back to its original delay and converts to frequency domain: $\hat{H}_{\text{LMMSE}}[k] = \text{FFT}\{\hat{h}_{\text{clean}}[n]\}$.
+
+1. **CIR Computation:** Transforms the frequency-domain channel estimate into the time-domain Channel Impulse Response via IFFT:
+   $$\hat{h}_{\mathrm{LS}}[n] = \mathrm{IFFT}\left\{ \hat{H}_{\mathrm{LS}}[k] \right\}$$
+
+2. **Circular Shift Centering:** Detects the peak power cursor tap and centers it at index $N/2$, resolving circular wrap-around effects from timing offsets.
+
+3. **Asymmetric Window Masking:** Applies an asymmetric time-domain window retaining $N_{\mathrm{back}} = 2$ pre-cursor taps and $N_{\mathrm{fwd}} = 15$ post-cursor taps, zeroing out all noise samples outside the true physical delay spread.
+
+4. **Frequency-Domain Restoration:** Shifts the cleaned impulse response back to its original delay offset and converts back to the frequency domain via FFT:
+   $$\hat{H}_{\mathrm{LMMSE}}[k] = \mathrm{FFT}\left\{ \hat{h}_{\mathrm{clean}}[n] \right\}$$
 
 <p align="center">
   <img src="docs/figures/channel5_cir_lmmse.png" alt="LMMSE Channel Impulse Response Filtering" width="700"/>
