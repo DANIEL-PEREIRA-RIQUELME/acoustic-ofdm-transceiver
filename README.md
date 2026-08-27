@@ -107,7 +107,9 @@ flowchart LR
 
 Frame arrival is determined through energy-normalized sliding cross-correlation between the received baseband stream $r[n]$ and the known preamble $p[n]$:
 
-$$M(d) = \frac{\left| \sum_{n=0}^{L-1} r^*[d+n] \, p[n] \right|^2}{\sum_{n=0}^{L-1} |r[d+n]|^2}$$
+$$
+M(d) = \frac{\left| \sum_{n=0}^{L-1} r^*[d+n] \, p[n] \right|^2}{\sum_{n=0}^{L-1} |r[d+n]|^2}
+$$
 
 Energy normalization ensures volume-invariant threshold detection ($\text{threshold} = 250$), reliably locating the frame boundary in low-SNR acoustic conditions.
 
@@ -123,9 +125,11 @@ Carrier frequency offsets degrade subcarrier orthogonality. The receiver applies
 1. **Coarse Grid Search:** Evaluates correlation across a frequency grid $\Delta f_{\text{grid}} \approx 9.6\text{ Hz}$ over $[-1200\text{ Hz}, +1200\text{ Hz}]$.
 2. **Fine Parabolic Interpolation:** Fits a quadratic polynomial $y = a f^2 + b f + c$ across the correlation peak and its adjacent samples:
 
-$$f_{\text{CFO}} = -\frac{b}{2a}$$
+$$
+f_{\mathrm{CFO}} = -\frac{b}{2a}
+$$
 
-The baseband signal is phase-derotated by $\exp(-j 2\pi f_{\text{CFO}} t)$ prior to demodulation.
+The baseband signal is phase-derotated by $\exp(-j 2\pi f_{\mathrm{CFO}} t)$ prior to demodulation.
 
 ---
 
@@ -133,19 +137,27 @@ The baseband signal is phase-derotated by $\exp(-j 2\pi f_{\text{CFO}} t)$ prior
 
 Standard Least Squares (LS) frequency-domain channel estimation divides the received training symbol by the transmitted reference:
 
-$$\hat{H}_{\text{LS}}[k] = \frac{Y_{\text{training}}[k]}{X_{\text{training}}[k]} = H[k] + \frac{Z[k]}{X_{\text{training}}[k]}$$
+$$
+\hat{H}_{\mathrm{LS}}[k] = \frac{Y_{\mathrm{training}}[k]}{X_{\mathrm{training}}[k]} = H[k] + \frac{Z[k]}{X_{\mathrm{training}}[k]}
+$$
 
 To prevent noise enhancement outside the channel's delay spread, an asymmetric time-domain windowing technique (LMMSE approximation) is applied:
 
 1. **CIR Computation:** Transforms the frequency-domain channel estimate into the time-domain Channel Impulse Response via IFFT:
-   $$\hat{h}_{\mathrm{LS}}[n] = \mathrm{IFFT}\left\{ \hat{H}_{\mathrm{LS}}[k] \right\}$$
+
+$$
+\hat{h}_{\mathrm{LS}}[n] = \mathrm{IFFT}\left\{ \hat{H}_{\mathrm{LS}}[k] \right\}
+$$
 
 2. **Circular Shift Centering:** Detects the peak power cursor tap and centers it at index $N/2$, resolving circular wrap-around effects from timing offsets.
 
 3. **Asymmetric Window Masking:** Applies an asymmetric time-domain window retaining $N_{\mathrm{back}} = 2$ pre-cursor taps and $N_{\mathrm{fwd}} = 15$ post-cursor taps, zeroing out all noise samples outside the true physical delay spread.
 
 4. **Frequency-Domain Restoration:** Shifts the cleaned impulse response back to its original delay offset and converts back to the frequency domain via FFT:
-   $$\hat{H}_{\mathrm{LMMSE}}[k] = \mathrm{FFT}\left\{ \hat{h}_{\mathrm{clean}}[n] \right\}$$
+
+$$
+\hat{H}_{\mathrm{LMMSE}}[k] = \mathrm{FFT}\left\{ \hat{h}_{\mathrm{clean}}[n] \right\}
+$$
 
 <p align="center">
   <img src="docs/figures/channel5_cir_lmmse.png" alt="LMMSE Channel Impulse Response Filtering" width="700"/>
@@ -154,7 +166,9 @@ To prevent noise enhancement outside the channel's delay spread, an asymmetric t
 #### ISI Metric Evaluation
 Inter-Symbol Interference (ISI) and eye pattern opening are evaluated via:
 
-$$D_{\text{peak}} = \sum_{k \neq d} \frac{|h[k]|}{|h[d]|}, \quad \eta = \frac{d_{\text{min}}/2}{|A|_{\text{max}}}, \quad \gamma_{\text{ISI}} = \frac{D_{\text{peak}}}{\eta}$$
+$$
+D_{\mathrm{peak}} = \sum_{k \neq d} \frac{|h[k]|}{|h[d]|}, \quad \eta = \frac{d_{\mathrm{min}}/2}{|A|_{\mathrm{max}}}, \quad \gamma_{\mathrm{ISI}} = \frac{D_{\mathrm{peak}}}{\eta}
+$$
 
 Transmission is decodable with an open eye diagram when $\gamma_{\text{ISI}} < 1$.
 
@@ -164,7 +178,9 @@ Transmission is decodable with an open eye diagram when $\gamma_{\text{ISI}} < 1
 
 Residual frequency offsets and sampling clock drift cause continuous constellation rotation over time. For each OFDM block $l$, the receiver estimates the phase error $\theta[l]$ across active pilot subcarriers:
 
-$$\theta[l] = \arg\left( \mathbf{p}^H \mathbf{Y}_{\text{pilots}}[l] \right)$$
+$$
+\theta[l] = \arg\left( \mathbf{p}^H \mathbf{Y}_{\mathrm{pilots}}[l] \right)
+$$
 
 Each OFDM symbol is then derotated by $\exp(-j \theta[l])$, maintaining constellation stability across long frames.
 
