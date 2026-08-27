@@ -1,0 +1,32 @@
+\chapter{ISI}
+
+\section{Mathematical Derivation of ISI Quantification}
+
+Starting from the discrete equivalent channel model with cursor $p[d]$, we derive the error bound step-by-step:
+
+\begin{align}
+    q[n]        &= \sum_{k} p[k] A[n-k] + z[n] \\
+    q[n]        &= p[d] A[n-d] + \sum_{k \neq d} p[k] A[n-k] + z[n] \\
+    \left| \frac{q[n]}{p[d]} - A[n-d] \right| &= \left| \sum_{k \neq d} \frac{p[k]}{p[d]} A[n-k] + \frac{z[n]}{p[d]} \right| \\
+    \left| \frac{q[n]}{p[d]} - A[n-d] \right| &\le |A|_{\text{max}} \underbrace{\sum_{k \neq d} \frac{|p[k]|}{|p[d]|}}_{D_{\text{peak}}} + \frac{|z[n]|}{|p[d]|} \\
+    \left|\frac{q[n]}{p[d]} - A[n-d] \right| &\le \gamma_{\text{ISI}} \left( \frac{d_{\text{min}}}{2} \right) + \frac{|z[n]|}{|p[d]|}
+\end{align}
+
+
+\begin{align}
+\gamma_{\text{ISI}} &\doteq D_{\text{peak}} / \eta\\
+D_{\text{peak}} &\doteq \sum_{k \neq d} \frac{|p[k]|}{|p[d]|} \\
+\eta &\doteq \frac{d_{\text{min}}/2}{|A|_{\text{max}}}
+\end{align}
+
+\newpage
+\begin{align}
+    q[n] &= \sum_{k} p[k] A[n-k] + z[n] && \text{\small (Discrete Model)} \nonumber \\
+    &= p[d] A[n-d] + \sum_{k \neq d} p[k] A[n-k] + z[n] && \text{\small (Cursor Decomposition)} \nonumber \\[1em]
+    \frac{q[n]}{p[d]} &= A[n-d] + \sum_{k \neq d} \frac{p[k]}{p[d]} A[n-k] + \frac{z[n]}{p[d]} && \text{\small (Normalization)} \nonumber \\[1em]
+    \left| \frac{q[n]}{p[d]} - A[n-d] \right| &= \left| \sum_{k \neq d} \frac{p[k]}{p[d]} A[n-k] + \frac{z[n]}{p[d]} \right| && \text{\small (Error Definition)} \nonumber \\
+    &\le \sum_{k \neq d} \left| \frac{p[k]}{p[d]} \right| |A[n-k]| + \left| \frac{z[n]}{p[d]} \right| && \text{\small (Triangle Inequality)} \nonumber \\[1em]
+    &\le |A|_{\text{max}} \underbrace{\sum_{k \neq d} \frac{|p[k]|}{|p[d]|}}_{D_{\text{peak}}} + \frac{|z[n]|}{|p[d]|} && \text{\small (Worst Case Distortion)} \nonumber \\[1em]
+    &\le |A|_{\text{max}} \left( \gamma_{\text{ISI}} \frac{d_{\text{min}}/2}{|A|_{\text{max}}} \right) + \frac{|z[n]|}{|p[d]|} && \text{\small (Substituting } D_{\text{peak}} = \gamma_{\text{ISI}}\eta \text{)} \nonumber \\[1em]
+    \therefore \quad \left| \frac{q[n]}{p[d]} - A[n-d] \right| &\le \gamma_{\text{ISI}} \left( \frac{d_{\text{min}}}{2} \right) + \frac{|z[n]|}{|p[d]|} && \text{\small (Final Bound)}
+\end{align}

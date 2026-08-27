@@ -1,0 +1,27 @@
+\chapternotnumbered{Introduction} \label{ch:Introduction}
+
+\vspace{2ex}
+
+Orthogonal Frequency Division Multiplexing (OFDM) is a widely adopted transmission technique
+for broadband communication over frequency-selective channels. By dividing a wideband
+channel into a set of narrowband orthogonal subcarriers, OFDM effectively mitigates
+Inter-Symbol Interference (ISI) and enables simpler equalization in the frequency
+domain.
+
+In this project, an acoustic OFDM communication system is designed, implemented, and
+experimentally validated. Acoustic channels are particularly challenging due to severe
+multipath propagation, long delay spreads, Doppler effects, and hardware-induced
+imperfections. These impairments make synchronization, channel estimation, and phase
+tracking critical components of the receiver design.
+
+The objective of this work is threefold. First, a complete OFDM transceiver is implemented
+in Matlab, including synchronization, channel estimation, equalization, and decoding.
+Second, the system performance is evaluated across a set of emulated channels exhibiting
+distinct impairments such as phase rotation, delay spread, band rejection, and multi-path
+fading. Finally, the system is validated in a real acoustic environment through the
+transmission of an image data, using the provided microphone and speakers.
+
+Special attention is given to practical receiver algorithms, including Least Squares (LS)
+and windowed LMMSE channel estimation, pilot-based phase tracking, and concatenated
+Forward Error Correction (FEC). Performance is assessed using metrics such as Bit Error
+Rate (BER), spectral efficiency, and channel impulse response characteristics.

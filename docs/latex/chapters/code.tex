@@ -1,0 +1,66 @@
+\chapter{Code Organisation} \label{ch:code}
+
+\begin{figure}[!ht]
+    \fcapside[\FBwidth]{%
+        \captionsetup{parskip = .5\baselineskip plus 1pt}%
+        \caption[Project File Structure and Usage]{%
+            \textbf{Structure and Usage Guide.}
+            
+            The project code is organized into a root directory containing the execution scripts and configuration, with modular functions separated by purpose.
+            
+            \textbf{Execution Flow:} The main entry point is \path{main.m}, which runs the complete image transmission experiment. It loads the image from \path{img/}, encodes it, transmits it (via audio or emulator), and reconstructs the received result. For performance analysis, \path{main_channelPlot.m} generates BER curves vs SNR, while \path{main_equalizationComp.m} compares different equalizer settings.
+            
+            \textbf{Configuration:} All system parameters are centralized in \path{configurations.m}. This includes the OFDM setup (512 subcarriers, CP length), signal parameters ($f_s=48$kHz), and channel model selection. Modify this file to change the experiment conditions.
+            
+            \textbf{Core Modules:} The \path{custom_function/} directory houses the user-implemented logic. It is split into \path{transmit/} (encoder, frame builder) and \path{receive/} (synchronization, channel estimation, decoding). Helper scripts like \path{preamble_generate.m} reside in the root of this folder. The \path{provided_function/} directory contains the pre-compiled channel emulator and standard filters provided for the course.
+        }%
+        \label{fig:project-structure}%
+    }{%
+        \begin{tikzpicture}[dirtree]
+            \node[directory] {OFDM Project/}
+            child { node {configurations.m}}
+            child { node {main.m}}
+            child { node {main\_channelPlot.m}}
+            child { node {main\_equalizationComp.m}}
+            child { node[directory] {custom\_function/}
+                child { node {preamble\_generate.m}}
+                child { node {tfplotReImPhase.m}}
+                child { node[directory] {receive/}
+                    child { node {receiver.m}}
+                    child { node {estimateTauAndCFO.m}}
+                    child { node {ChannelMetrics.m}}
+                    child { node {channel\_estLS.m}}
+                    child { node {channel\_decoder.m}}
+                    child { node {correctOFDMSymbolRotation.m}}
+                    child { node {ofdm\_rx\_frame.m}}
+                }
+                child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} 
+                child { node[directory] {transmit/}
+                    child { node {transmitter.m}}
+                    child { node {ofdm\_tx\_frame\_with\_pilots.m}}
+                    child { node {channel\_encoder.m}}
+                }
+            }
+            child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {} child [missing] {}
+            child [missing] {} child [missing] {}
+            child { node[directory] {img/}
+                child { node {test-image.bmp}}
+                child { node {received\_image.bmp}}
+            }
+            child [missing] {}
+            child { node[directory] {provided\_function/}
+                child { node {channel\_emulator.p}}
+                child { node {ofdmlowpass.m}}
+                child { node {rrc.m}}
+                child { node {ofdm\_rx\_resampling.m}}
+                child { node {ofdm\_tx\_resampling.m}}
+            }
+            ;
+        \end{tikzpicture}%
+    }
+\end{figure}
+
+
+
+
+

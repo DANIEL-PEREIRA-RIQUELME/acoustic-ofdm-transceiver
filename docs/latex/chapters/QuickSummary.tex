@@ -1,0 +1,21 @@
+\section*{Quick Summary}
+
+This report presents the design, implementation, and validation of an acoustic OFDM communication system optimized for reverberant environments.
+
+\Cref{ch:design} describes the complete transceiver architecture, including the OFDM frame structure, synchronization preamble, and pilot-assisted transmission.
+
+\Cref{ch:sync} details the receiver synchronization algorithms, including normalized cross-correlation for packet detection, two-stage Carrier Frequency Offset (CFO) estimation, and pilot-based phase tracking to compensate for residual phase drift.
+
+\Cref{ch:channel} evaluates the performance of Least Squares (LS) and windowed LMMSE channel estimation techniques across five distinct channel models, highlighting their strengths and limitations in the presence of noise, delay spread, and frequency-selective fading.
+
+\Cref{ch:performance} analyzes the spectral efficiency of the implemented system and discusses the impact of modulation order, cyclic prefix length, training overhead, and payload size.
+
+\Cref{ch:transmission} presents the results of a real acoustic image transmission experiment conducted in the Rolex Learning Center (RLC), demonstrating the system’s robustness to severe multipath propagation.
+
+Finally, \Cref{ch:coding} evaluates the impact of concatenated channel coding on Bit Error Rate (BER) performance and discusses the associated trade-offs between robustness and throughput.
+
+\Cref{ch:appendix_visual} provides extensive visual documentation of channel responses, equalized constellations, and experimental results.
+
+\begin{Note}
+    For detailed instructions on how to execute the simulations or manipulate the project files, please refer to the \textbf{Code Organization} section in \Cref{organization}.
+\end{Note}
