@@ -141,23 +141,12 @@ $$
 \hat{H}_{\mathrm{LS}}[k] = \frac{Y_{\mathrm{training}}[k]}{X_{\mathrm{training}}[k]} = H[k] + \frac{Z[k]}{X_{\mathrm{training}}[k]}
 $$
 
-To prevent noise enhancement outside the channel's delay spread, an asymmetric time-domain windowing technique (LMMSE approximation) is applied:
+While unbiased, raw LS estimation amplifies noise across attenuated subcarriers. To reject noise outside the channel's multipath delay profile, an asymmetric time-domain windowing technique (LMMSE approximation) is applied:
 
-1. **CIR Computation:** Transforms the frequency-domain channel estimate into the time-domain Channel Impulse Response via IFFT:
-
-$$
-\hat{h}_{\mathrm{LS}}[n] = \mathrm{IFFT}\left\{ \hat{H}_{\mathrm{LS}}[k] \right\}
-$$
-
-2. **Circular Shift Centering:** Detects the peak power cursor tap and centers it at index $N/2$, resolving circular wrap-around effects from timing offsets.
-
-3. **Asymmetric Window Masking:** Applies an asymmetric time-domain window retaining $N_{\mathrm{back}} = 2$ pre-cursor taps and $N_{\mathrm{fwd}} = 15$ post-cursor taps, zeroing out all noise samples outside the true physical delay spread.
-
-4. **Frequency-Domain Restoration:** Shifts the cleaned impulse response back to its original delay offset and converts back to the frequency domain via FFT:
-
-$$
-\hat{H}_{\mathrm{LMMSE}}[k] = \mathrm{FFT}\left\{ \hat{h}_{\mathrm{clean}}[n] \right\}
-$$
+1. **CIR Computation:** Transforms the frequency-domain channel response into the time-domain Channel Impulse Response (CIR) via an IFFT.
+2. **Circular Shift Centering:** Locates the peak power cursor tap and circularly shifts it to the center index ($N/2$), resolving circular convolution wrap-around and boundary edge artifacts.
+3. **Asymmetric Window Masking:** Applies a rectangular window centered on the cursor, preserving $N_{\mathrm{back}} = 2$ pre-cursor taps and $N_{\mathrm{fwd}} = 15$ post-cursor taps while zeroing out all noise samples outside the true physical multipath spread.
+4. **Frequency-Domain Restoration:** Shifts the noise-suppressed CIR back to its original delay alignment and transforms it back to the frequency domain via FFT to obtain the refined equalizer coefficients $\hat{H}_{\mathrm{LMMSE}}[k]$.
 
 <p align="center">
   <img src="docs/figures/channel5_cir_lmmse.png" alt="LMMSE Channel Impulse Response Filtering" width="700"/>
@@ -170,7 +159,7 @@ $$
 D_{\mathrm{peak}} = \sum_{k \neq d} \frac{|h[k]|}{|h[d]|}, \quad \eta = \frac{d_{\mathrm{min}}/2}{|A|_{\mathrm{max}}}, \quad \gamma_{\mathrm{ISI}} = \frac{D_{\mathrm{peak}}}{\eta}
 $$
 
-Transmission is decodable with an open eye diagram when $\gamma_{\text{ISI}} < 1$.
+Transmission is decodable with an open eye diagram when $\gamma_{\mathrm{ISI}} < 1$.
 
 ---
 
@@ -179,7 +168,7 @@ Transmission is decodable with an open eye diagram when $\gamma_{\text{ISI}} < 1
 Residual frequency offsets and sampling clock drift cause continuous constellation rotation over time. For each OFDM block $l$, the receiver estimates the phase error $\theta[l]$ across active pilot subcarriers:
 
 $$
-\theta[l] = \arg\left( \mathbf{p}^H \mathbf{Y}_{\mathrm{pilots}}[l] \right)
+\theta[l] = \arg(\mathbf{p}^H \mathbf{Y}_{\mathrm{pilots}}[l])
 $$
 
 Each OFDM symbol is then derotated by $\exp(-j \theta[l])$, maintaining constellation stability across long frames.
