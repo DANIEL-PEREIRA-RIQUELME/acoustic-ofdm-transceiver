@@ -40,10 +40,7 @@ if isfield(conf, 'coding') && conf.coding.use_fec
 end
 
 % --- 2. Load & Prepare Image Data ---
-image_path = fullfile('data', 'test-image.bmp');
-if ~exist(image_path, 'file')
-    image_path = fullfile('data', 'test_image.bmp');
-end
+image_path = fullfile('data', 'test_image.bmp');
 
 img = imread(image_path);
 img_reduced = imresize(img, 0.1);  % Scale down for fast demonstration

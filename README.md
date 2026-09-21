@@ -250,15 +250,16 @@ The system was experimentally validated through acoustic transmission of a color
 │   │   ├── ofdm_rx_frame.m        # CP removal, FFT demodulation, and subcarrier demux
 │   │   └── channel_decoder.m      # Concatenated FEC decoder (Viterbi + Reed-Solomon)
 │   └── lib/                       # DSP utility library and channel emulator
-│       ├── channel_emulator.p     # Acoustic channel emulator (Models 1 to 5)
+│       ├── channel_emulator.p     # Acoustic channel emulator (Models 1 to 5), provided by the course
 │       ├── preamble_generate.m    # LFSR pseudo-random preamble generator
 │       ├── rrc.m                  # Root-Raised Cosine pulse shaping filter
 │       ├── ofdmlowpass.m          # Anti-aliasing / image rejection filter
-│       └── [pskMap.m, qamMap.m, encoder.m, decoder.m, bi2de.m, de2bi.m...]
+│       └── [pskMap.m, qamMap.m, encoder.m, decoder.m, bi2de.m, de2bi.m...]  # course-provided helpers
 │
+├── LICENSE                        # MIT (code only)
 ├── data/                          # Test assets and transmission outputs
 │   ├── test_image.bmp             # Original input image
-│   └── received_image.bmp         # Reconstructed output image
+│   └── received_image.bmp         # Reconstructed output image (written by main_image_transmission.m)
 │
 └── docs/                          # Project documentation
     ├── report.pdf                 # Full EPFL EE-442 Project Report (PDF)
@@ -329,3 +330,5 @@ The complete academic report with mathematical derivations, ISI error bounds, an
 
 **Supervision:** Telecommunications Circuits Laboratory (TCL), **École Polytechnique Fédérale de Lausanne (EPFL)**.  
 **Course:** *EE-442 Wireless Receivers: Algorithms and Architectures*.
+
+The channel emulator (`channel_emulator.p`), the mapping helpers in `src/lib/` (`pskMap`, `qamMap`, `encoder`, `decoder`, `bi2de`, `de2bi`), the assignment handouts in `docs/assignment/` and the LaTeX template in `docs/latex/` were provided by the course and remain under their original terms. The rest of the code is released under the [MIT License](LICENSE).
