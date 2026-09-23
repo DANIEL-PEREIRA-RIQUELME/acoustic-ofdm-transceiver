@@ -20,6 +20,7 @@ An acoustic multicarrier communication system designed, implemented, and experim
    - [Asymmetric Windowed LMMSE Channel Estimation](#asymmetric-windowed-lmmse-channel-estimation)
    - [Pilot-Assisted Residual Phase Tracking](#pilot-assisted-residual-phase-tracking)
    - [Concatenated Forward Error Correction](#concatenated-forward-error-correction)
+   - [Spectral Efficiency Trade-offs](#spectral-efficiency-trade-offs)
 5. [Channel Models and Equalization Analysis](#channel-models-and-equalization-analysis)
 6. [Over-the-Air Experimental Validation](#over-the-air-experimental-validation)
 7. [Repository Structure](#repository-structure)
@@ -97,6 +98,12 @@ flowchart LR
 
 <p align="center">
   <img src="docs/figures/ofdm_frame_structure.png" alt="OFDM Frame Structure" width="750"/>
+</p>
+
+<p align="center">
+  <img src="docs/figures/rx_block_diagram.png" alt="Receiver Block Diagram" width="850"/>
+  <br/>
+  <em>Figure: Receiver processing block diagram (<code>receiver.m</code>), from downconversion and preamble detection through CFO compensation, OFDM demodulation, channel estimation, equalization, phase correction, de-mapping, and FEC decoding to the recovered bits.</em>
 </p>
 
 ---
@@ -183,6 +190,24 @@ To maintain link reliability over reverberant channels, a two-layer coding strat
 
 <p align="center">
   <img src="docs/figures/ber_fec_comparison.png" alt="BER Waterfall and Coding Gain" width="550"/>
+</p>
+
+---
+
+### Spectral Efficiency Trade-offs
+
+The Rate $1/2$ FEC and the cyclic prefix both trade raw throughput for robustness. Longer cyclic prefixes waste bandwidth on redundant guard samples, and short frames spend a larger fraction of their payload on the training symbol and preamble overhead:
+
+<p align="center">
+  <img src="docs/figures/spectral_efficiency_cp.png" alt="Spectral Efficiency vs Cyclic Prefix Length" width="550"/>
+  <br/>
+  <em>Figure: Spectral efficiency (bits/Hz) as a function of cyclic prefix length, with and without the concatenated FEC.</em>
+</p>
+
+<p align="center">
+  <img src="docs/figures/spectral_efficiency_payload.png" alt="Spectral Efficiency vs Payload Length" width="550"/>
+  <br/>
+  <em>Figure: Spectral efficiency (bit/s/Hz) as a function of the number of data OFDM symbols per frame, with and without the concatenated FEC.</em>
 </p>
 
 ---
